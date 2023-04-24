@@ -1,13 +1,11 @@
-using System.Security.Cryptography;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel;
 
 public class Player : MonoBehaviour
 {
     Rigidbody m_rb;
     public GameController m_gc;
-    public float speed = 10f;
+    public float speed;
+    bool isOnGround;
     public AudioSource aus;
     public AudioClip eatCoinSound;
     public AudioClip loseSound;
@@ -23,7 +21,7 @@ public class Player : MonoBehaviour
         {
             Movement();
         }
-        else
+        else if(isOnGround)
         {
             m_rb.velocity /= 1.03f;
         }
@@ -35,7 +33,13 @@ public class Player : MonoBehaviour
 
         Vector3 move = new Vector3(-moveHorizontal,0.0f,-moveVertical);
         m_rb.AddForce(move * speed);
-    } 
+    }
+    private void Jump()
+    {
+        m_rb.AddForce(Vector3.up * 400f);
+    }
+
+
     private void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.CompareTag("Bomb"))
@@ -43,7 +47,6 @@ public class Player : MonoBehaviour
             col.gameObject.SetActive(false);
             if (aus && loseSound && !m_gc.getIsGameOver())
             {
-                Debug.Log("Phat am thua cuoc");
                 aus.PlayOneShot(loseSound);
             }
             Destroy(gameObject);
@@ -52,14 +55,33 @@ public class Player : MonoBehaviour
         if (col.gameObject.CompareTag("Coin"))
         {
             col.gameObject.SetActive(false);
+            m_gc.removeCoinPos(col.gameObject.transform.position);
             if (aus && eatCoinSound)
             {
-                Debug.Log("Phat am an coin");
                 aus.PlayOneShot(eatCoinSound);
             }
-            Debug.Log("An 1 coin");
+        }
+        if (col.gameObject.CompareTag("Bungee"))
+        {
+            Jump();
         }
     }
 
+    private void OnCollisionStay(Collision col)
+    {
+        if (col.gameObject.CompareTag("Ground"))
+        {
+            isOnGround = true;
+            speed = 30f;
+        }
+    }
 
+    private void OnCollisionExit(Collision col)
+    {
+        if (col.gameObject.CompareTag("Ground"))
+        {
+            isOnGround = false;
+            speed = 5f;
+        }
+    }
 }

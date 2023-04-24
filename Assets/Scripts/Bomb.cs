@@ -13,7 +13,6 @@ public class Bomb : MonoBehaviour
         if (col.CompareTag("Player"))
         {
             Destroy(gameObject);
-            Debug.Log("Da dinh bomb");
         }
     }
 }

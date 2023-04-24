@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +5,7 @@ public class GameUIManager : MonoBehaviour
 {
     public Text CurrentScoreText;
     public GameObject GameOverPanel;
+    public GameObject GamePausePanel;
     public Text LastScoreText;
 
     public void SetScoreText(string scoreText)
@@ -30,6 +29,14 @@ public class GameUIManager : MonoBehaviour
         if (GameOverPanel)
         {
             GameOverPanel.SetActive(isShow);
+        }
+    }
+
+    public void showGamePausePanel(bool isShow)
+    {
+        if (GamePausePanel)
+        {
+            GamePausePanel.SetActive(isShow);
         }
     }
 }
