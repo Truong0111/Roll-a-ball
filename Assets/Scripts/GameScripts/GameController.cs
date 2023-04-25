@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
     public float spawnTimeCoin;
     public float spawnTimeBomb;
     public float spawnTimeBungee;
-    float countCoin = 12f;
+    float countCoin = 6f;
     float countBungee = 11f;
     List<Vector3> coinPos;
     List<Vector3> bombPos;

@@ -2,17 +2,18 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    Rigidbody m_rb;
-    public GameController m_gc;
+    Rigidbody rb;
+    public GameController gc;
     public float speed;
     bool isOnGround;
     public AudioSource aus;
     public AudioClip eatCoinSound;
     public AudioClip loseSound;
+    public AudioClip jumpSound;
     private void Start()
     {
-        m_gc = FindObjectOfType<GameController>();
-        m_rb = GetComponent<Rigidbody>();
+        gc = FindObjectOfType<GameController>();
+        rb = GetComponent<Rigidbody>();
         
     }
     private void FixedUpdate()
@@ -23,7 +24,7 @@ public class Player : MonoBehaviour
         }
         else if(isOnGround)
         {
-            m_rb.velocity /= 1.03f;
+            rb.velocity /= 1.03f;
         }
     }
     private void Movement()
@@ -32,11 +33,11 @@ public class Player : MonoBehaviour
         float moveVertical = Input.GetAxis("Vertical");
 
         Vector3 move = new Vector3(-moveHorizontal,0.0f,-moveVertical);
-        m_rb.AddForce(move * speed);
+        rb.AddForce(move * speed);
     }
     private void Jump()
     {
-        m_rb.AddForce(Vector3.up * 400f);
+        rb.AddForce(Vector3.up * 400f);
     }
 
 
@@ -45,17 +46,17 @@ public class Player : MonoBehaviour
         if (col.gameObject.CompareTag("Bomb"))
         {
             col.gameObject.SetActive(false);
-            if (aus && loseSound && !m_gc.getIsGameOver())
+            if (aus && loseSound && !gc.getIsGameOver())
             {
                 aus.PlayOneShot(loseSound);
             }
             Destroy(gameObject);
-            m_gc.setIsGameOver(true);
+            gc.setIsGameOver(true);
         }
         if (col.gameObject.CompareTag("Coin"))
         {
             col.gameObject.SetActive(false);
-            m_gc.removeCoinPos(col.gameObject.transform.position);
+            gc.removeCoinPos(col.gameObject.transform.position);
             if (aus && eatCoinSound)
             {
                 aus.PlayOneShot(eatCoinSound);
@@ -63,6 +64,10 @@ public class Player : MonoBehaviour
         }
         if (col.gameObject.CompareTag("Bungee"))
         {
+            if(aus && jumpSound) 
+            {
+                aus.PlayOneShot(jumpSound);
+            }
             Jump();
         }
     }
@@ -81,7 +86,7 @@ public class Player : MonoBehaviour
         if (col.gameObject.CompareTag("Ground"))
         {
             isOnGround = false;
-            speed = 5f;
+            speed = 0f;
         }
     }
 }
