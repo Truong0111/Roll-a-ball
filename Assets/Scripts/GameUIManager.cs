@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class GameUIManager : MonoBehaviour
 {
     public Text CurrentScoreText;
+    public Text CurrentScoreText2;
     public GameObject GameOverPanel;
     public GameObject GamePausePanel;
     public Text LastScoreText;
@@ -13,6 +14,7 @@ public class GameUIManager : MonoBehaviour
         if (CurrentScoreText)
         {
             CurrentScoreText.text = scoreText;
+            CurrentScoreText2.text = scoreText;
         }
     }
 

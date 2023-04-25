@@ -176,6 +176,7 @@ public class GameController : MonoBehaviour
 
     public void Replay()
     {
+        Time.timeScale = 1.0f;
         SceneManager.LoadScene("GameScene");
     }
 
