@@ -7,7 +7,9 @@ public class GameUIManager : MonoBehaviour
     public Text CurrentScoreText2;
     public GameObject GameOverPanel;
     public GameObject GamePausePanel;
+    public GameObject CurrentGamePanel;
     public Text LastScoreText;
+    public Text HighScoreText;
 
     public void SetScoreText(string scoreText)
     {
@@ -26,10 +28,25 @@ public class GameUIManager : MonoBehaviour
         }
     }
 
+    public void SetHighScoreText(string highScoreText)
+    {
+        if(HighScoreText)
+        {
+            HighScoreText.text = highScoreText;
+        }
+    }
+    public void ShowCurrentGamePanel(bool isShow)
+    {
+        if (CurrentGamePanel)
+        {
+            CurrentGamePanel.SetActive(isShow);
+        }
+    }
     public void showGameOverPanel(bool isShow)
     {
         if (GameOverPanel)
         {
+            ShowCurrentGamePanel(!isShow);
             GameOverPanel.SetActive(isShow);
         }
     }
@@ -38,6 +55,7 @@ public class GameUIManager : MonoBehaviour
     {
         if (GamePausePanel)
         {
+            ShowCurrentGamePanel(!isShow);
             GamePausePanel.SetActive(isShow);
         }
     }

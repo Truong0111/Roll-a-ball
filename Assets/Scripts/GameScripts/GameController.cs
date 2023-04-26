@@ -19,6 +19,7 @@ public class GameController : MonoBehaviour
     float m_spawnTimeBomb;
     float m_spawnTimeBungee;
     int m_score;
+    public int m_highScore;
     bool m_isGameOver;
     GameUIManager m_ui;
     // Start is called before the first frame update
@@ -33,6 +34,8 @@ public class GameController : MonoBehaviour
         m_ui = FindObjectOfType<GameUIManager>();
         m_ui.SetScoreText("Score: " + m_score);
         m_ui.SetLastScoreText("Score: " + m_score);
+        m_ui.SetHighScoreText("High Score: " + m_highScore);
+        LoadHighScore();
     }
 
     // Update is called once per frame
@@ -152,6 +155,16 @@ public class GameController : MonoBehaviour
         return m_score;
     }
 
+    public void setHighScore(int highScore)
+    {
+        m_highScore = highScore;
+    }
+
+    public int getHighScore()
+    {
+        return m_highScore;
+    }
+
     public void ScoreIncreament()
     {
         if (m_isGameOver)
@@ -162,6 +175,12 @@ public class GameController : MonoBehaviour
         m_score++;
         m_ui.SetScoreText("Score: " + m_score);
         m_ui.SetLastScoreText("Score: " + m_score);
+        if (m_score > m_highScore)
+        {
+            m_highScore = m_score;
+            SaveHighScore();
+        }
+        m_ui.SetHighScoreText("High Score: " + m_highScore);
     }
 
     public void setIsGameOver(bool isGameOver)
@@ -194,5 +213,16 @@ public class GameController : MonoBehaviour
     {
         Time.timeScale = 1.0f;
         m_ui.showGamePausePanel(false);
+    }
+
+    public void SaveHighScore()
+    {
+        SaveSystem.SaveScore(this);
+    }
+
+    public void LoadHighScore()
+    {
+        ScoreData data = SaveSystem.LoadScore();
+        m_highScore = data.highScore;
     }
 }

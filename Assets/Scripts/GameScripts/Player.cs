@@ -14,7 +14,6 @@ public class Player : MonoBehaviour
     {
         gc = FindObjectOfType<GameController>();
         rb = GetComponent<Rigidbody>();
-        
     }
     private void FixedUpdate()
     {
@@ -39,8 +38,6 @@ public class Player : MonoBehaviour
     {
         rb.AddForce(Vector3.up * 400f);
     }
-
-
     private void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.CompareTag("Bomb"))
