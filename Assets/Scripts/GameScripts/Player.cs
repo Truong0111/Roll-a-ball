@@ -1,4 +1,6 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
@@ -10,6 +12,7 @@ public class Player : MonoBehaviour
     public AudioClip eatCoinSound;
     public AudioClip loseSound;
     public AudioClip jumpSound;
+    public VirtualJoyStick moveJoyStick;
     private void Start()
     {
         gc = FindObjectOfType<GameController>();
@@ -17,11 +20,11 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if(Input.anyKey)
+        if (Input.anyKey)
         {
             Movement();
         }
-        else if(isOnGround)
+        else if (isOnGround)
         {
             rb.velocity /= 1.03f;
         }
@@ -30,6 +33,11 @@ public class Player : MonoBehaviour
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
+
+        if(moveJoyStick.InputDirection != Vector3.zero)
+        {
+            rb.AddForce(-moveJoyStick.InputDirection * speed);
+        }
 
         Vector3 move = new Vector3(-moveHorizontal,0.0f,-moveVertical);
         rb.AddForce(move * speed);

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
@@ -22,9 +24,9 @@ public class GameController : MonoBehaviour
     public int m_highScore;
     bool m_isGameOver;
     GameUIManager m_ui;
-    // Start is called before the first frame update
     void Start()
     {
+        Application.targetFrameRate = 60;
         m_spawnTimeCoin = 0;
         m_spawnTimeBomb = 10f;
         m_spawnTimeBungee = 15f;

@@ -8,30 +8,17 @@ public class MenuUIManager : MonoBehaviour
     public Text HighScoreText;
     public void ShowSoundPanel(bool isShow)
     {
-        if (isShow)
-        {
-            MenuPanel.SetActive(!isShow);
-            SoundPanel.SetActive(isShow);
-        }
-        else
-        {
-            MenuPanel.SetActive(!isShow);
-            SoundPanel.SetActive(isShow);
-        }
+        MenuPanel.SetActive(!isShow);
+        SoundPanel.SetActive(isShow);
+        
     }
 
     public void ShowHighScorePanel(bool isShow)
     {
-        if(isShow)
-        {
-            MenuPanel.SetActive(!isShow);
-            HighScorePanel.SetActive(isShow);
-        }
-        else 
-        {
-            MenuPanel.SetActive(!isShow);
-            HighScorePanel.SetActive(isShow);
-        }
+        
+        MenuPanel.SetActive(!isShow);
+        HighScorePanel.SetActive(isShow);
+        
     }
     public void SetHighScoreText(string highScoreText)
     {

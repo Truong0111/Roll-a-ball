@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class GameUIManager : MonoBehaviour
@@ -10,7 +11,7 @@ public class GameUIManager : MonoBehaviour
     public GameObject CurrentGamePanel;
     public Text LastScoreText;
     public Text HighScoreText;
-
+    public GameObject JoyStickCont;
     public void SetScoreText(string scoreText)
     {
         if (CurrentScoreText)
@@ -57,6 +58,14 @@ public class GameUIManager : MonoBehaviour
         {
             ShowCurrentGamePanel(!isShow);
             GamePausePanel.SetActive(isShow);
+        }
+    }
+
+    public void showJoyStickCont(bool isShow)
+    {
+        if (JoyStickCont)
+        {
+            JoyStickCont.SetActive(isShow);
         }
     }
 }
