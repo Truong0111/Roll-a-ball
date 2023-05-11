@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
-    public GameController m_gc;
-
+    [SerializeField] private GameController m_gc;
     private void Start()
     {
         m_gc = FindObjectOfType<GameController>();

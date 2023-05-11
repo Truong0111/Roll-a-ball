@@ -5,48 +5,63 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
-    public Coin coin;
-    public Bomb bomb;
-    public Bungee bungee;
-    public Player player;
+    [SerializeField] private Coin coin;
+    [SerializeField] private Bomb bomb;
+    [SerializeField] private Bungee bungee;
+    [SerializeField] private Player player;
     public float spawnTimeCoin;
     public float spawnTimeBomb;
     public float spawnTimeBungee;
-    float countCoin = 6f;
-    float countBungee = 11f;
-    List<Vector3> coinPos;
-    List<Vector3> bombPos;
-    List<Vector3> bungeePos;
-    float m_spawnTimeCoin;
-    float m_spawnTimeBomb;
-    float m_spawnTimeBungee;
-    int m_score;
+    private float countCoin = 6f;
+    private float countBungee = 11f;
+    private List<Vector3> coinPos;
+    private List<Vector3> bombPos;
+    private List<Vector3> bungeePos;
+    private float m_spawnTimeCoin;
+    private float m_spawnTimeBomb;
+    private float m_spawnTimeBungee;
+    private int m_score;
     public int m_highScore;
-    bool m_isGameOver;
-    GameUIManager m_ui;
-    void Start()
+    private bool m_isGameOver;
+    [SerializeField] private GameUIManager m_ui;
+    private void Start()
     {
         Application.targetFrameRate = 60;
+        InitGame();
+        InitUI();
+        LoadHighScore();
+    }
+    private void InitGame()
+    {
         m_spawnTimeCoin = 0;
         m_spawnTimeBomb = 10f;
         m_spawnTimeBungee = 15f;
         coinPos = new List<Vector3>();
         bombPos = new List<Vector3>();
         bungeePos = new List<Vector3>();
-        m_ui = FindObjectOfType<GameUIManager>();
-        m_ui.SetScoreText("Score: " + m_score);
-        m_ui.SetLastScoreText("Score: " + m_score);
-        m_ui.SetHighScoreText("High Score: " + m_highScore);
-        LoadHighScore();
     }
-
-    // Update is called once per frame
-    void Update()
+    private void InitUI()
+    {
+        m_ui.SetScoreText( m_score);
+        m_ui.SetLastScoreText(m_score);
+        m_ui.SetHighScoreText(m_highScore);
+    }
+    private void Update()
+    {
+        CheckGamePause();
+        CheckGameOver();
+        SpawnObject();
+        
+    }
+    private void CheckGamePause()
     {
         if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape))
         {
             Pause();
         }
+    }
+    private void CheckGameOver()
+    {
         if (m_isGameOver)
         {
             m_spawnTimeCoin = 0;
@@ -55,6 +70,9 @@ public class GameController : MonoBehaviour
             m_ui.showGameOverPanel(true);
             return;
         }
+    }
+    private void SpawnObject()
+    {
         m_spawnTimeCoin -= Time.deltaTime;
         m_spawnTimeBomb -= Time.deltaTime;
         m_spawnTimeBungee -= Time.deltaTime;
@@ -63,22 +81,23 @@ public class GameController : MonoBehaviour
             SpawnCoin();
             m_spawnTimeCoin = spawnTimeCoin;
         }
-        if(m_spawnTimeBomb <= 0)
+        if (m_spawnTimeBomb <= 0)
         {
             SpawnBomb();
             m_spawnTimeBomb = spawnTimeBomb;
         }
-        if(m_spawnTimeBungee <= 0)
+        if (m_spawnTimeBungee <= 0)
         {
             SpawnBungee();
             m_spawnTimeBungee = spawnTimeBungee;
         }
     }
-    
-    public void SpawnCoin()
+    private const float spawnLimit = 8.5f;
+    private void SpawnCoin()
     {
-        float randXPos = Random.Range(-8.5f,8.5f);
-        float randZPos = Random.Range(-8.5f,8.5f);
+        
+        float randXPos = Random.Range(-spawnLimit, spawnLimit);
+        float randZPos = Random.Range(-spawnLimit, spawnLimit);
         Vector3 spawnPos = new Vector3(randXPos,0.5f,randZPos);
         if (checkSpawn(spawnPos,coinPos) || checkSpawn(spawnPos,bombPos))
         {
@@ -92,10 +111,10 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void SpawnBomb()
+    private void SpawnBomb()
     {
-        float randXPos = Random.Range(-8.5f, 8.5f);
-        float randZPos = Random.Range(-8.5f, 8.5f);
+        float randXPos = Random.Range(-spawnLimit, spawnLimit);
+        float randZPos = Random.Range(-spawnLimit, spawnLimit);
         Vector3 spawnPos = new Vector3(randXPos, 0.4f, randZPos);
         if(checkSpawn(spawnPos,bombPos) || checkSpawn(spawnPos, coinPos)
             || checkSpawn(spawnPos,bungeePos)) 
@@ -109,10 +128,10 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void SpawnBungee()
+    private void SpawnBungee()
     {
-        float randXPos = Random.Range(-6f, 6f);
-        float randZPos = Random.Range(-6f, 6f);
+        float randXPos = Random.Range(-spawnLimit + 2f, spawnLimit - 2f);
+        float randZPos = Random.Range(-spawnLimit + 2f, spawnLimit - 2f);
         Vector3 spawnPos = new Vector3(randXPos, 0.01f, randZPos);
         if(checkSpawn(spawnPos,bungeePos) || checkSpawn(spawnPos, bombPos))
         {
@@ -125,7 +144,7 @@ public class GameController : MonoBehaviour
             countBungee--;
         }
     }
-    bool checkSpawn(Vector3 spawnPos, List<Vector3> checkSpawnList)
+    private bool checkSpawn(Vector3 spawnPos, List<Vector3> checkSpawnList)
     {
         if (checkSpawnList.Count != 0)
         {
@@ -137,7 +156,7 @@ public class GameController : MonoBehaviour
         }
         return false;
     }
-    bool checkPlayerPos(Vector3 spawnPos)
+    private bool checkPlayerPos(Vector3 spawnPos)
     {
         Vector3 tmp = spawnPos - player.transform.position;
         if (tmp.sqrMagnitude >= 0 && tmp.sqrMagnitude <= 2.25f) return true;
@@ -175,14 +194,14 @@ public class GameController : MonoBehaviour
         }
         countCoin++;
         m_score++;
-        m_ui.SetScoreText("Score: " + m_score);
-        m_ui.SetLastScoreText("Score: " + m_score);
+        m_ui.SetScoreText(m_score);
+        m_ui.SetLastScoreText(m_score);
         if (m_score > m_highScore)
         {
             m_highScore = m_score;
             SaveHighScore();
         }
-        m_ui.SetHighScoreText("High Score: " + m_highScore);
+        m_ui.SetHighScoreText(m_highScore);
     }
 
     public void setIsGameOver(bool isGameOver)
@@ -194,16 +213,17 @@ public class GameController : MonoBehaviour
     {
         return m_isGameOver;
     }
-
+    private string GAME_SCENE = "GameScene";
+    private string MENU_SCENE = "MenuScene";
     public void Replay()
     {
         Time.timeScale = 1.0f;
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene(GAME_SCENE);
     }
 
     public void BackToMenu()
     {
-        SceneManager.LoadScene("MenuScene");
+        SceneManager.LoadScene(MENU_SCENE);
     }
     public void Pause()
     {

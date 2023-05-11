@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
-    public GameController m_gc;
-    float speed = 200f;
+    [SerializeField] private GameController m_gc;
+    [SerializeField] private float speed = 200f;
     private void Start()
     {
         m_gc = FindObjectOfType<GameController>();

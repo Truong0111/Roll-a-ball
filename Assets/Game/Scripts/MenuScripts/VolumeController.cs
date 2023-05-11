@@ -1,9 +1,8 @@
 using UnityEngine;
-using UnityEngine.Audio;
 using UnityEngine.UI;
 public class VolumeController : MonoBehaviour
 {
-    [SerializeField] public Slider VolumeSlider;
+    [SerializeField] private Slider VolumeSlider;
     
     private void Start()
     {

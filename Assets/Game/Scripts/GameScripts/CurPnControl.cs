@@ -2,13 +2,16 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 public class CurPnControl : MonoBehaviour, IPointerDownHandler
 {
-    public GameObject JoyStick;
+    [SerializeField] private GameObject JoyStick;
     public Vector3 InputDirection { set; get; }
-    GameUIManager m_ui;
+    [SerializeField] private GameUIManager m_ui;
     public void Start()
     {
-        m_ui = FindObjectOfType<GameUIManager>();
         InputDirection = Vector3.zero;
+        setUIAndroid();
+    }
+    private void setUIAndroid()
+    {
         if (Application.platform != RuntimePlatform.Android)
         {
             m_ui.showJoyStickCont(false);
@@ -29,7 +32,4 @@ public class CurPnControl : MonoBehaviour, IPointerDownHandler
             JoyStick.transform.position = new Vector3(x, y);
         }
     }
-
-
-    
 }

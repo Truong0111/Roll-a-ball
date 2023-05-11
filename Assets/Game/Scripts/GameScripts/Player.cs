@@ -4,20 +4,16 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    Rigidbody rb;
-    public GameController gc;
-    public float speed;
-    bool isOnGround;
-    public AudioSource aus;
-    public AudioClip eatCoinSound;
-    public AudioClip loseSound;
-    public AudioClip jumpSound;
-    public VirtualJoyStick moveJoyStick;
-    private void Start()
-    {
-        gc = FindObjectOfType<GameController>();
-        rb = GetComponent<Rigidbody>();
-    }
+    [SerializeField] private Rigidbody rb;
+    [SerializeField] private GameController gc;
+    [SerializeField] private float speed;
+    private bool isOnGround;
+
+    [SerializeField] private AudioSource aus;
+    [SerializeField] private AudioClip eatCoinSound;
+    [SerializeField] private AudioClip loseSound;
+    [SerializeField] private AudioClip jumpSound;
+    [SerializeField] private VirtualJoyStick moveJoyStick;
     private void FixedUpdate()
     {
         if (Input.anyKey)
@@ -44,7 +40,8 @@ public class Player : MonoBehaviour
     }
     private void Jump()
     {
-        rb.AddForce(Vector3.up * 400f);
+        float jumpHigh = 400f;
+        rb.AddForce(Vector3.up * jumpHigh);
     }
     private void OnTriggerEnter(Collider col)
     {

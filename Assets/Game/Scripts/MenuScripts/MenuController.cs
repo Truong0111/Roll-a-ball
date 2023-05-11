@@ -3,8 +3,9 @@ using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour
 {
-    public MenuUIManager UiManager;
-    public VolumeController VolGc;
+    private string GAME_SCENE = "GameScene";
+    [SerializeField] private MenuUIManager UiManager;
+    [SerializeField] private VolumeController VolGc;
     public int m_highScore ;
     private void Start()
     {
@@ -12,7 +13,7 @@ public class MenuController : MonoBehaviour
     }
     public void Play()
     {
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene(GAME_SCENE);
     }
     public void Sound()
     {
@@ -21,13 +22,13 @@ public class MenuController : MonoBehaviour
     public void HighScore()
     {
         UiManager.ShowHighScorePanel(true);
-        UiManager.SetHighScoreText("High Score: " + m_highScore);
+        UiManager.SetHighScoreText(m_highScore);
     }
     public void Reset()
     {
         m_highScore = 0;
         SaveHighScore();
-        UiManager.SetHighScoreText("High Score: " + m_highScore);
+        UiManager.SetHighScoreText(m_highScore);
     }
     public void BackFromSound()
     {

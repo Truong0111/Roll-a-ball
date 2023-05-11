@@ -1,39 +1,38 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class GameUIManager : MonoBehaviour
 {
-    public Text CurrentScoreText;
-    public Text CurrentScoreText2;
-    public GameObject GameOverPanel;
-    public GameObject GamePausePanel;
-    public GameObject CurrentGamePanel;
-    public Text LastScoreText;
-    public Text HighScoreText;
-    public GameObject JoyStickCont;
-    public void SetScoreText(string scoreText)
+    [SerializeField] private Text CurrentScoreText;
+    [SerializeField] private Text CurrentScoreText2;
+    [SerializeField] private GameObject GameOverPanel;
+    [SerializeField] private GameObject GamePausePanel;
+    [SerializeField] private GameObject CurrentGamePanel;
+    [SerializeField] private Text LastScoreText;
+    [SerializeField] private Text HighScoreText;
+    [SerializeField] private GameObject JoyStickCont;
+    public void SetScoreText(int score)
     {
         if (CurrentScoreText)
         {
-            CurrentScoreText.text = scoreText;
-            CurrentScoreText2.text = scoreText;
+            CurrentScoreText.text = "Score: " + score;
+            CurrentScoreText2.text = "Score: " + score;
         }
     }
 
-    public void SetLastScoreText(string lastScoreText)
+    public void SetLastScoreText(int lastScore)
     {
         if (LastScoreText)
         {
-            LastScoreText.text = lastScoreText;
+            LastScoreText.text = "Score: " + lastScore;
         }
     }
 
-    public void SetHighScoreText(string highScoreText)
+    public void SetHighScoreText(int highScore)
     {
         if(HighScoreText)
         {
-            HighScoreText.text = highScoreText;
+            HighScoreText.text = "High Score: " + highScore;
         }
     }
     public void ShowCurrentGamePanel(bool isShow)
